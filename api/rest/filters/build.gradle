@@ -31,12 +31,12 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured'
 }
 
-group 'example.java'
-version '1.0-SNAPSHOT'
+group "${groupProps}"
+version "${versionProps}"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = "${javaVersion}"
+    targetCompatibility = "${javaVersion}"
 }
 
 test {
