@@ -1,0 +1,52 @@
+buildscript {
+    new BufferedReader(new FileReader(file('../../../gradle.properties')))
+            .withCloseable { reader ->
+                String line
+                while ((line = reader.readLine()) != null) {
+                    println(line)
+                    String name = line.substring(0, line.indexOf('='))
+                    String value = line.substring(line.indexOf('=') + 1)
+                    project.ext.set(name, value)
+                }
+            }
+}
+
+plugins {
+    id 'java'
+    id 'io.quarkus' version "${quarkusPluginVersion}"
+    id "com.github.ben-manes.versions" version "${githubBenManesVersion}"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-rest'
+    implementation 'io.quarkus:quarkus-rest-jackson'
+    implementation 'io.quarkus:quarkus-arc'
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.rest-assured:rest-assured'
+}
+
+group 'example.java'
+version '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+test {
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+}
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
