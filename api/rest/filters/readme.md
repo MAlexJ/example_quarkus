@@ -1,56 +1,56 @@
+### Request or response filters
 
-### REST
 
-#### Endpoints
+link: https://quarkus.io/guides/rest#request-or-response-filters
 
-web app port configuration:
+#### Via annotations
 
-1. Docker file:
+You can declare functions that are invoked in the following phases of the request processing:
 
-```
-ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=${PORT}"
-```
+* Before the endpoint method is identified: pre-matching request filter
+* After routing, but before the endpoint method is called: normal request filter
+* After the endpoint method is called: response filter
 
-2. Application properties
+These filters allow you to do various things such as examine the request URI, HTTP method, influence routing, 
+look or change request headers, abort the request, or modify the response.
 
-```
-quarkus.http.port=${PORT:8080}
-```
-
-```
-quarkus.http.root-path=/api
-```
-
-#### Health endpoint
-
-Add the SmallRye Health extension:
+Request filters can be declared with the @ServerRequestFilter annotation:
 
 ```
-    implementation 'io.quarkus:quarkus-smallrye-health'
+import java.util.Optional;
+
+class Filters {
+
+    @ServerRequestFilter(preMatching = true)
+    public void preMatchingFilter(ContainerRequestContext requestContext) {
+        // make sure we don't lose cheese lovers
+        if("yes".equals(requestContext.getHeaderString("Cheese"))) {
+            requestContext.setRequestUri(URI.create("/cheese"));
+        }
+    }
+
+    @ServerRequestFilter
+    public Optional<RestResponse<Void>> getFilter(ContainerRequestContext ctx) {
+        // only allow GET methods for now
+        if(!ctx.getMethod().equals(HttpMethod.GET)) {
+            return Optional.of(RestResponse.status(Response.Status.METHOD_NOT_ALLOWED));
+        }
+        return Optional.empty();
+    }
+}
 ```
 
-Once added, the following endpoints become available automatically:
-
-* GET /q/health → General health
-* GET /q/health/live → Liveness check
-* GET /q/health/ready → Readiness check
+Similarly, response filters can be declared with the @ServerResponseFilter annotation:
 
 ```
-### BASE Configuration: General health
-GET http://localhost:8080/q/health
-
-### BASE Configuration: Liveness check
-GET http://localhost:8080/q/health/live
-
-### BASE Configuration: Readiness check
-GET http://localhost:8080q/health/ready
-```
-
-Customization:
-
-By default, all Quarkus system endpoints are under /q/. To change the health check path:
-
-```
-quarkus.http.root-path=/api
-quarkus.smallrye-health.root-path=/health
+class Filters {
+    @ServerResponseFilter
+    public void getFilter(ContainerResponseContext responseContext) {
+        Object entity = responseContext.getEntity();
+        if(entity instanceof String) {
+            // make it shout
+            responseContext.setEntity(((String)entity).toUpperCase());
+        }
+    }
+}
 ```
