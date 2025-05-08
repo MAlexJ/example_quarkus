@@ -27,7 +27,7 @@ public class RequestFilter {
    */
   @ServerRequestFilter(preMatching = true)
   public void preMatchingFilter(ContainerRequestContext ctx) {
-    log.info("Pre-matching filter");
+    log.info("1. Pre-matching filter");
 
     // Option 1: Use setRequestUri(baseUri, newUri)
     if ("redirect".equals(ctx.getHeaderString("X-AUTH"))) {
@@ -48,7 +48,7 @@ public class RequestFilter {
    */
   @ServerRequestFilter
   public Optional<RestResponse<Void>> getFilter(ContainerRequestContext ctx) {
-    log.info("Normal filter");
+    log.info("2. Normal filter");
     // only allow GET methods for now
     if (!ctx.getMethod().equals(HttpMethod.GET)) {
       return Optional.of(RestResponse.status(Response.Status.METHOD_NOT_ALLOWED));
