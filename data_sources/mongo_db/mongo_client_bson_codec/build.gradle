@@ -1,0 +1,54 @@
+buildscript {
+    new BufferedReader(new FileReader(file('../../../gradle.properties')))
+            .withCloseable { reader ->
+                String line
+                while ((line = reader.readLine()) != null) {
+                    println(line)
+                    String name = line.substring(0, line.indexOf('='))
+                    String value = line.substring(line.indexOf('=') + 1)
+                    project.ext.set(name, value)
+                }
+            }
+}
+
+plugins {
+    id 'java'
+    id 'io.quarkus' version "${quarkusPluginVersion}"
+    id "com.github.ben-manes.versions" version "${githubBenManesVersion}"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-mongodb-client'
+    implementation 'io.quarkus:quarkus-rest-jackson'
+    implementation 'io.quarkus:quarkus-arc'
+    implementation 'io.quarkus:quarkus-rest'
+}
+
+group "${groupProps}"
+version "${versionProps}"
+
+java {
+    sourceCompatibility = "${javaVersion}"
+    targetCompatibility = "${javaVersion}"
+}
+
+tasks.register("copyEnvAsProperties", Copy) {
+    from(rootProject.file(".env"))  // Path to .env file in the root project
+    into("$projectDir/src/main/resources")
+    rename { "config.properties" }  // rename .env to config.properties
+}
+
+tasks.named("processResources") {
+    dependsOn("copyEnvAsProperties")
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}

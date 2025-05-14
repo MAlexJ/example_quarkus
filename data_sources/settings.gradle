@@ -3,4 +3,5 @@ rootProject.name = 'data_sources'
 include 'mongo_db',
         'mongo_db:mongo_client',
         'mongo_db:mongo_client_reactive',
-        'mongo_db:mongo_client_mongo_collection'
+        'mongo_db:mongo_client_mongo_collection',
+        'mongo_db:mongo_client_bson_codec'
