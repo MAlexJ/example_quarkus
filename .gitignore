@@ -10,6 +10,7 @@ build/
 !**/src/test/**/build/
 
 api/gradle
+config.properties
 
 
 ### STS ###

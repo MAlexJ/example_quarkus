@@ -1,5 +1,6 @@
 package com.malex;
 
+import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -12,23 +13,22 @@ import java.util.List;
 @Path("/fruits")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class FruitResource {
+public class ReactiveFruitResource {
 
-  FruitService fruitService;
+  private final ReactiveFruitService fruitService;
 
   @Inject
-  public FruitResource(FruitService fruitService) {
+  public ReactiveFruitResource(ReactiveFruitService fruitService) {
     this.fruitService = fruitService;
   }
 
   @GET
-  public List<Fruit> list() {
+  public Uni<List<Fruit>> list() {
     return fruitService.list();
   }
 
   @POST
-  public List<Fruit> add(Fruit fruit) {
-    fruitService.add(fruit);
-    return fruitService.list();
+  public Uni<List<Fruit>> add(Fruit fruit) {
+    return fruitService.add(fruit).onItem().ignore().andSwitchTo(this::list);
   }
 }

@@ -1,3 +1,5 @@
 rootProject.name = 'mongo_db'
 
-include 'mongo_client'
+include 'mongo_client',
+        'mongo_client_reactive',
+        'mongo_client_mongo_collection'
