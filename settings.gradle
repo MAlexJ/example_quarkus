@@ -10,4 +10,5 @@ pluginManagement {
 }
 rootProject.name = 'example_quarkus'
 
-include 'api:rest:filters'
+include 'api:rest:filters',
+        'data_sources:mongo_db:mongo_client'

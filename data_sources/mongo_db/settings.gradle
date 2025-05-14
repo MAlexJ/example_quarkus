@@ -1,0 +1,3 @@
+rootProject.name = 'mongo_db'
+
+include 'mongo_client'
