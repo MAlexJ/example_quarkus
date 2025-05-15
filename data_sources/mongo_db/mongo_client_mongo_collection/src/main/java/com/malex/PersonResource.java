@@ -17,12 +17,6 @@ public class PersonResource {
     this.personRepository = personRepository;
   }
 
-  @GET
-  @Path("/hello")
-  public String hello() {
-    return "Hello from Quarkus REST";
-  }
-
   @POST
   @Path("/person")
   public String createPerson(PersonEntity person) {

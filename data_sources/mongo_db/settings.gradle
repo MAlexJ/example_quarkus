@@ -1,7 +1,8 @@
 rootProject.name = 'mongo_db'
 
-include 'mongo_client',
+include 'mongo_client_document',
         'mongo_client_reactive',
         'mongo_client_mongo_collection',
         'mongo_client_bson_codec',
+        'mongo_client_pojo_codec',
         'migration'

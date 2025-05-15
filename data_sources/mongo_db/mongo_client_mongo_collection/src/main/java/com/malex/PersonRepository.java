@@ -9,21 +9,45 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import org.bson.BsonObjectId;
+import org.bson.BsonValue;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class PersonRepository {
+
+  @ConfigProperty(name = "quarkus.mongodb.database")
+  String dbName;
 
   private final MongoCollection<PersonEntity> coll;
 
   @Inject
   public PersonRepository(MongoClient mongoClient) {
-    this.coll = mongoClient.getDatabase("test").getCollection("persons", PersonEntity.class);
+
+    /*
+     * The type of codec used in your PersonRepository example is a POJO codec (PojoCodecProvider),
+     * which is automatically used by MongoDB’s Java driver when you request a typed collection
+     */
+    this.coll =
+        mongoClient
+            /*
+             * default database:
+             * @ConfigProperty(name = "quarkus.mongodb.database") String dbName
+             */
+            .getDatabase(dbName)
+            .getCollection("persons", PersonEntity.class);
   }
 
   public String add(PersonEntity person) {
-    return coll.insertOne(person).getInsertedId().asObjectId().getValue().toHexString();
+    var bsonValueId = coll.insertOne(person).getInsertedId();
+    return Optional.ofNullable(bsonValueId)
+        .map(BsonValue::asObjectId)
+        .map(BsonObjectId::getValue)
+        .map(ObjectId::toHexString)
+        .orElseThrow();
   }
 
   public List<PersonEntity> getPersons() {

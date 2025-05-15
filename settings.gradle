@@ -11,8 +11,9 @@ pluginManagement {
 rootProject.name = 'example_quarkus'
 
 include 'api:rest:filters',
-        'data_sources:mongo_db:mongo_client',
+        'data_sources:mongo_db:mongo_client_document',
         'data_sources:mongo_db:mongo_client_reactive',
         'data_sources:mongo_db:mongo_client_mongo_collection',
         'data_sources:mongo_db:mongo_client_bson_codec',
+        'data_sources:mongo_db:mongo_client_pojo_codec',
         'data_sources:mongo_db:migration'
