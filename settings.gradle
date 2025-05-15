@@ -17,4 +17,7 @@ include 'api:rest:filters',
         'data_sources:mongo_db:mongo_client:mongo_client_mongo_collection',
         'data_sources:mongo_db:mongo_client:mongo_client_bson_codec',
         'data_sources:mongo_db:mongo_client:mongo_client_pojo_codec',
-        'data_sources:mongo_db:migration'
+        'data_sources:mongo_db:migration',
+        'data_sources:mongo_db:panache',
+        'data_sources:mongo_db:panache:active_record_pattern',
+        'data_sources:mongo_db:panache:repository_pattern'

@@ -7,4 +7,7 @@ include 'mongo_db',
         'mongo_db:mongo_client:mongo_client_mongo_collection',
         'mongo_db:mongo_client:mongo_client_bson_codec',
         'mongo_db:mongo_client:mongo_client_pojo_codec',
-        'mongo_db:migration'
+        'mongo_db:migration',
+        'mongo_db:panache',
+        'mongo_db:panache:active_record_pattern',
+        'mongo_db:panache:repository_pattern'

@@ -1,0 +1,4 @@
+rootProject.name = 'panache'
+
+include 'active_record_pattern',
+        'repository_pattern'
