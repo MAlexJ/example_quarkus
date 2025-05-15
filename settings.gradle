@@ -18,6 +18,8 @@ include 'api:rest:filters',
         'data_sources:mongo_db:mongo_client:mongo_client_bson_codec',
         'data_sources:mongo_db:mongo_client:mongo_client_pojo_codec',
         'data_sources:mongo_db:migration',
+        'schedule',
+        'schedule:virtual_threads',
         'data_sources:mongo_db:panache',
         'data_sources:mongo_db:panache:active_record_pattern',
         'data_sources:mongo_db:panache:repository_pattern'
