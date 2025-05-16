@@ -1,0 +1,4 @@
+rootProject.name = 'cache'
+
+include 'default_in_memory',
+        'redis'
