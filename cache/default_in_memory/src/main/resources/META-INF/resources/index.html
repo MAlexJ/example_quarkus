@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User REST service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- A beautiful CSS framework designed for minimalists. -->
+    <link rel="stylesheet" href="/libs/wing.min.css"/>
+    <!-- React and ReactDOM libs -->
+    <script src="/libs/react.development.js"></script>
+    <script src="/libs/react-dom.development.js"></script>
+    <script src="/libs/babel.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>REST Service Users</h1>
+    <div id="root"></div>
+</div>
+
+<script type="text/babel">
+
+    function FruitApp() {
+        const [form, setForm] = React.useState({name: "", description: ""});
+        const [fruits, setFruits] = React.useState([]);
+
+        React.useEffect(() => {
+            fetchFruits();
+        }, []);
+
+        const fetchFruits = () => {
+            fetch("/users")
+                .then(res => res.json())
+                .then(data => setFruits(data))
+                .catch(err => alert("Failed to fetch fruits: " + err));
+        };
+
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            fetch("/users", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(form)
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("Failed to save");
+                    return res.json();
+                })
+                .then(() => {
+                    setForm({name: "", description: ""});
+                    fetchFruits();
+                })
+                .catch(err => alert(err.message));
+        };
+
+        return (
+            <div>
+                <h3>Add a fruit</h3>
+                <form onSubmit={handleSubmit}>
+                    <div className="row">
+                        <div className="col-6">
+                            <label>
+                                <input
+                                    type="text"
+                                    placeholder="Name"
+                                    value={form.name}
+                                    onChange={(e) => setForm({...form, name: e.target.value})}
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-6">
+                            <label>
+                                <input
+                                    type="text"
+                                    placeholder="Description"
+                                    value={form.description}
+                                    onChange={(e) => setForm({...form, description: e.target.value})}
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <input type="submit" value="Save"/>
+                </form>
+
+                <h3>Fruit List</h3>
+                <div className="row">
+                    <div className="col-4"><strong>Name</strong></div>
+                    <div className="col-8"><strong>Description</strong></div>
+                </div>
+                {fruits.map((fruit, index) => (
+                    <div className="row" key={index}>
+                        <div className="col-4">{fruit.name}</div>
+                        <div className="col-8">{fruit.description}</div>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<FruitApp/>);
+</script>
+</body>
+</html>
