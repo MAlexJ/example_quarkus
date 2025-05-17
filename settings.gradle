@@ -11,6 +11,7 @@ pluginManagement {
 rootProject.name = 'example_quarkus'
 
 include 'api:rest:filters',
+        'api:rest:virtual_threads',
         'data_sources:mongo_db:mongo_client',
         'data_sources:mongo_db:mongo_client:mongo_client_document',
         'data_sources:mongo_db:mongo_client:mongo_client_reactive',
@@ -21,6 +22,7 @@ include 'api:rest:filters',
         'schedule',
         'cache',
         'mapper',
+        'rest_client',
         'mapper:map_struct',
         'cache:default_in_memory',
         'cache:redis',

@@ -1,3 +1,4 @@
 rootProject.name = 'rest'
 
-include 'filters'
+include 'filters',
+        'virtual_threads'

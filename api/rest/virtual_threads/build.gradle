@@ -1,0 +1,44 @@
+buildscript {
+    new BufferedReader(new FileReader(file('../../../gradle.properties')))
+            .withCloseable { reader ->
+                String line
+                while ((line = reader.readLine()) != null) {
+                    println(line)
+                    String name = line.substring(0, line.indexOf('='))
+                    String value = line.substring(line.indexOf('=') + 1)
+                    project.ext.set(name, value)
+                }
+            }
+}
+
+plugins {
+    id 'java'
+    id 'io.quarkus' version "${quarkusPluginVersion}"
+    id "com.github.ben-manes.versions" version "${githubBenManesVersion}"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-rest-client-jackson'
+    implementation 'io.quarkus:quarkus-rest-jackson'
+    implementation 'io.quarkus:quarkus-arc'
+}
+
+group "${groupProps}"
+version "${versionProps}"
+
+java {
+    sourceCompatibility = "${javaVersion}"
+    targetCompatibility = "${javaVersion}"
+}
+
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
