@@ -1,0 +1,5 @@
+rootProject.name = 'rabbitmq'
+
+include 'messaging_rabbitmq',
+        'rabbitmq_client',
+        'quickstart_producer'

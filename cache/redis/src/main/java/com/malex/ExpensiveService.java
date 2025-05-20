@@ -4,6 +4,7 @@ import io.quarkus.cache.CacheInvalidateAll;
 import io.quarkus.cache.CacheKey;
 import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.time.LocalDateTime;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -17,7 +18,7 @@ public class ExpensiveService {
   @CacheResult(cacheName = EXPENSIVE_CACHE)
   public ExpensiveResponse setAndGetExpensiveResponse(@CacheKey String message) {
     log.info("Get expensive response");
-    return new ExpensiveResponse(message);
+    return new ExpensiveResponse(message, LocalDateTime.now());
   }
 
   @CacheInvalidateAll(cacheName = "expensive-cache")

@@ -1,3 +1,5 @@
 package com.malex;
 
-public record ExpensiveResponse(String message) {}
+import java.time.LocalDateTime;
+
+public record ExpensiveResponse(String message, LocalDateTime time) {}
