@@ -1,0 +1,5 @@
+rootProject.name = 'reactive_messaging_style'
+
+include 'quickstart_processor',
+        'quickstart_producer',
+        'manual_processing'

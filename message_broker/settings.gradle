@@ -1,7 +1,3 @@
 rootProject.name = 'message_broker'
 
-include 'rabbitmq',
-        'rabbitmq:messaging_rabbitmq',
-        'rabbitmq:messaging_rabbitmq:quickstart_processor',
-        'rabbitmq:messaging_rabbitmq:quickstart_producer',
-        'rabbitmq:rabbitmq_client'
+include 'rabbitmq'

@@ -1,5 +1,3 @@
 rootProject.name = 'api'
 
-include 'rest',
-        'rest:filters',
-        'rest:virtual_threads'
+include 'rest'

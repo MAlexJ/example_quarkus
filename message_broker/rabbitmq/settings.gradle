@@ -1,5 +1,4 @@
 rootProject.name = 'rabbitmq'
 
-include 'messaging_rabbitmq',
-        'rabbitmq_client',
-        'quickstart_producer'
+include 'reactive_messaging_style',
+        'imperative_rabbitmq_client'
