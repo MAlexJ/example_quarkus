@@ -1,7 +1,10 @@
 package com.malexj;
 
+import io.netty.util.internal.ThreadLocalRandom;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Random;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
@@ -13,14 +16,16 @@ import org.eclipse.microprofile.reactive.messaging.Outgoing;
 @ApplicationScoped
 public class QuoteProcessor {
 
-  private Random random = new Random();
+  private final Random random = new Random();
 
   @Incoming("requests")
   @Outgoing("quotes")
   @Blocking
   public Quote process(String quoteRequest) throws InterruptedException {
     // simulate some hard-working task
-    Thread.sleep(1000);
-    return new Quote(quoteRequest, random.nextInt(100));
+    int millis = ThreadLocalRandom.current().nextInt(1000, 2000);
+    Thread.sleep(millis);
+
+    return new Quote(quoteRequest, random.nextInt(100), LocalDateTime.now(ZoneId.of("UTC")));
   }
 }

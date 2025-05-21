@@ -1,6 +1,7 @@
 package com.malexj;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import java.time.LocalDateTime;
 
 /*
 * The @RegisterForReflection annotation in Quarkus is used to tell the native image compiler (GraalVM)
@@ -10,5 +11,5 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 * to be available for reflection in a native image.
  */
 @RegisterForReflection
-public record Quote(String id, int price) {
+public record Quote(String id, int price, LocalDateTime time) {
 }
